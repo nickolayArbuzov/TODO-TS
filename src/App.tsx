@@ -63,6 +63,15 @@ function App() {
         setTasks( {...tasksObj} );
     }
 
+    const changeTitleTodolist = (todolistId: string, newTitle: string) => {
+        const findedTodolist = todolists.find(td => td.id === todolistId);
+        if(findedTodolist) {
+            debugger
+            findedTodolist.title = newTitle;
+            setTodolists([...todolists])
+        }
+    }
+
     let [tasksObj, setTasks] = useState<TaskStateType>({
         [todolistId1]: [
             { id: v1(), title: 'css', isDone: true },
@@ -90,6 +99,15 @@ function App() {
         })
     }
 
+    const changeTaskTitle = (taskId: string, newTitle: string, todolistId: string) => {
+        let tasks = tasksObj[todolistId];
+        let task = tasks.find( t => t.id === taskId );
+        if (task){
+            task.title = newTitle;
+            setTasks({ ...tasksObj });
+        }
+    }
+
     return (
         <div className="App">
             <AddItemForm addItem={addTodoList}/>
@@ -112,6 +130,8 @@ function App() {
                                     changeTaskStatus={changeTaskStatus}
                                     filter={td.filter}
                                     removeTodolist={removeTodolist}
+                                    changeTaskTitle={changeTaskTitle}
+                                    changeTitleTodolist={changeTitleTodolist}
                         />
                 })
             }
