@@ -1,4 +1,7 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import TextField from '@material-ui/core/TextField';
+import { IconButton } from '@material-ui/core';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void,
@@ -7,16 +10,21 @@ type AddItemFormPropsType = {
 export function AddItemForm(props: AddItemFormPropsType) {
     let [newTaskTitle, setNewTaskTitle] = useState('');
     let [error, setError] = useState<string | null>(null);
+    let [focus, setFocus] = useState(false);
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError('');
         if(e.charCode === 13){
-            addTask();
+            addItem();
         }
     }
-    const addTask = () => {
+    const errorDeleted = () => {
+        setFocus(true);
+        setError('');
+    }
+    const addItem = () => {
         if(newTaskTitle.trim() === '') {
             setError('Title is required');
             return;
@@ -25,11 +33,10 @@ export function AddItemForm(props: AddItemFormPropsType) {
         setNewTaskTitle('');
     }
     return  <div>
-                <input value={newTaskTitle} 
-                    onChange={onNewTitleChangeHandler}
-                    onKeyPress={onKeyPressHandler}
-                    className={error ? 'error' : ''}/>
-                <button onClick={addTask}>+</button>
-                {error && <div className={'errorMessage'}>{error}</div>}
+                { !error 
+                ? <TextField autoFocus={focus} value={newTaskTitle} onChange={onNewTitleChangeHandler} onKeyPress={onKeyPressHandler} id="standard-basic" label="Entering..." />
+                : <TextField error id="standard-error-helper-text" label="Error" defaultValue="" helperText={error} onFocus={errorDeleted}/>
+                }
+                <IconButton onClick={addItem}><PlaylistAddIcon/></IconButton>
             </div>
 }
