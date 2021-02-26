@@ -75,7 +75,6 @@ function App() {
     const changeTitleTodolist = (todolistId: string, newTitle: string) => {
         const findedTodolist = todolists.find(td => td.id === todolistId);
         if(findedTodolist) {
-            debugger
             findedTodolist.title = newTitle;
             setTodolists([...todolists])
         }
