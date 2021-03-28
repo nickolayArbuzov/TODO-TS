@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import { FilterValuesType } from './AppWithRedux';
 import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
@@ -28,7 +28,7 @@ type PropsType = {
     changeTitleTodolist: (todolistId: string, newValue: string) => void
 }
 
-export const Todolist = (props: PropsType) => {
+export const Todolist = React.memo((props: PropsType) => {
     console.log('рендер туду')
     const dispatch = useDispatch();
     const tasksObj = useSelector<AppRootState, Array<TaskType>>(state => {
@@ -55,7 +55,7 @@ export const Todolist = (props: PropsType) => {
 
     return <div>
                 <h3> <EditableSpan title={props.title} onChange={changeTitleTodolist}/> <IconButton onClick={removeTodolist} aria-label="delete"><DeleteIcon /></IconButton> </h3>
-                <AddItemForm addItem={title => dispatch(addTaskAC(title, props.id))}/>
+                <AddItemForm addItem={useCallback(title => dispatch(addTaskAC(title, props.id)), [])}/>
                 <div>
                     {
                         tasksForTODO.map(t => {
@@ -85,4 +85,4 @@ export const Todolist = (props: PropsType) => {
                             variant="contained" onClick={onCompletedClickHandler}>Completed</Button>
                 </div>
         </div>
-}
+})
