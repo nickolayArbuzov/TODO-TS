@@ -29,6 +29,7 @@ type PropsType = {
 }
 
 export const Todolist = (props: PropsType) => {
+    console.log('рендер туду')
     const dispatch = useDispatch();
     const tasksObj = useSelector<AppRootState, Array<TaskType>>(state => {
         return state.tasks[props.id];
